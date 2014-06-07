@@ -1,0 +1,14 @@
+tile.theflogat:mythology:altarBlock.name=Altar
+tile.theflogat:mythology:blockRune.name=Runic Block: Ritual Frame
+
+theflogat:mythology:itemRune.name=Rune
+theflogat:mythology:itemRuneEarth.name=Rune: Earth Empowered
+theflogat:mythology:itemRuneAir.name=Rune: Air Empowered
+theflogat:mythology:itemRuneWater.name=Rune: Water Empowered
+theflogat:mythology:itemRuneLava.name=Rune: Lava Empowered
+theflogat:mythology:itemRuneLife.name=Rune: Life Empowered
+theflogat:mythology:itemRuneDeath.name=Rune: Death Empowered
+theflogat:mythology:itemRuneLight.name=Rune: Light Empowered
+theflogat:mythology:itemRuneObscurous.name=Rune: Obscurous Empowered
+
+item.theflogat:mythology:itemTome.name=Tome Of Knowledge
