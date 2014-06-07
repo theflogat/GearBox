@@ -13,7 +13,7 @@ import fr.theflogat.gearbox.lib.ModLib;
 import fr.theflogat.gearbox.lib.Names;
 import fr.theflogat.gearbox.lib.config.Ids;
 
-public class Items {
+public class LoadItems {
 
 	public static void init() {
 		Gears.Resource = new ItemResources(Ids.actualResource);

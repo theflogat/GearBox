@@ -38,8 +38,7 @@ public class GuiTypesTome extends GuiTomeTemplate{
 					new Page(Type.HANDLER, new PageRecipeInst(new ItemStack(Gears.GearBench), new ItemStack[]{
 						new ItemStack(Item.ingotGold),new ItemStack(Item.ingotGold),new ItemStack(Item.ingotGold),
 						new ItemStack(Block.blockIron),new ItemStack(Block.workbench),new ItemStack(Block.blockIron),
-						new ItemStack(Block.blockIron),new ItemStack(Block.pistonBase),new ItemStack(Block.blockIron)	
-							}))
+						new ItemStack(Block.blockIron),new ItemStack(Block.pistonBase),new ItemStack(Block.blockIron)}))
 				},
 				{
 					new Page(Type.TEXT),new Page(Type.TEXT)
@@ -63,18 +62,18 @@ public class GuiTypesTome extends GuiTomeTemplate{
 				"efficiency of the reaction or the amount of RF output per tick. Some low-quality gears like wood and cobblestone " +
 				"have instability as well, which can cause your dynamo to break");
 		pagesH[1][1].addText("instead of run if it gets too high. You'll also need " +
-				"to make a reaction chamber (also called an input shaft), which determines what kind of fuel your dynamo will run, and " +
-				"one of several output shafts, which determines the upper limit of your energy output. " + 
-				"To find your final efficiency, take the square root of the gear train's collective multiplier. " +
-				"In the crafter GUI");
+				"to make a reaction chamber (also called an input shaft), which determines what kind of fuel your dynamo will run, and what "+
+				"will be steped up, and one of several output shafts, which determines the upper limit of your energy output. " + 
+				"To find your final efficiency, take the square root of the gear train's collective multiplier divided by the the square root of "+
+				"the total number of gears. In the crafter's GUI");
 		pagesH[1][2].addText("you place your input and output shafts, and then between them run a string of connected " +
 				"gears. You can snake it around in any direction you want, so long as there's a single path. All eight slots around a gear " +
 				"count, so if you have multiple paths touching they'll grind together and reduce the efficiency of your system. "
 				+ "The efficiency of each gear in your gear train is");
-		pagesH[1][3].addText("multiplied together, while the output rating is added, " +
-				"up to the limit then is being substracted the number of gears*8."
-				+ " Once your gears are in the shape you want, flick your redstone signal to craft them into a gearbox," +
-				"which is sent into the adjacent inventory. If your instability is around twenty or higher, the gearbox won't run.");
+		pagesH[1][3].addText("multiplied together, while the output rating is added, up to the limit then is being substracted the number "+
+				"of gears*8. Once your gears are in the shape you want, flick your redstone signal to craft them into a gearbox," +
+				"which is sent into the adjacent inventory. If your instability is around twenty or higher, the gearbox won't run. Stats "+
+				"are displayed from within the GUI.");
 		
 		pagesH[2][0].addText("Now you can place a dynamo housing wherever you like and right-click your new gearbox on the housing to " +
 				"place it inside. Any old gearbox will be ejected. " +
@@ -86,8 +85,7 @@ public class GuiTypesTome extends GuiTomeTemplate{
 				"to a pipe or conduit. Instead, you need to feed a storage device directly. The dynamo will stop consuming fuel when " +
 				"its power limit is reach and save it.");
 		
-		pagesH[3][0].addText(
-				"If you are not happy with your gearbox, you are now able to get them back. Just right-click with it on an empty " +
+		pagesH[3][0].addText("If you are not happy with your gearbox, you are now able to get them back. Just right-click with it on an empty " +
 				"gearbox crafting table and you are good to go.");
 		
 		pagesH[4][0].addText("If you are happy with you gearbox but think it is a \'pain\' to craft you can use the template provider. "
@@ -99,7 +97,7 @@ public class GuiTypesTome extends GuiTomeTemplate{
 				+ "into joules. This allowed you to create a device which you called the Meca(nic) Tool. It is really powerful when "
 				+ "a gearbox is installed into it. Just place the gearbox left to the tool and right click with the tool. It has "
 				+ "a fast mining speed and deals a small amout of damage that bypasses completly any kind of armor.");
-		pagesH[5][1].addText(" Right-clicking might cause you some trouble as holding right-click will.");
+		pagesH[5][1].addText(" Right-clicking a block might cause you some trouble as holding right-click will.");
 		
 		Page[][] pagesF = {
 				{
@@ -318,7 +316,6 @@ public class GuiTypesTome extends GuiTomeTemplate{
 					new ButtonEntry(30, 36, "Reacting Liquids", 3, pagesF[3]),
 					new ButtonEntry(30, 44, "Reactants", 4, pagesF[4])
 				}
-				
 		};
 		
 		tabs = new ButtonTab[2];

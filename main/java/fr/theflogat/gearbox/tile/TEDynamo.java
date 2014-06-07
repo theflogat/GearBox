@@ -48,11 +48,12 @@ public class TEDynamo extends TER implements IEnergyHandler, IFluidHandler{
 				if(ticksRemain==0){
 					for(Input in : Input.valid){
 						try{
-							if(inv[2].stackTagCompound.getBoolean(in.ident)){
+							int i = inv[2].stackTagCompound.getInteger(in.ident);
+							if(i>=0){
 								if(in.id==0){
 									if(inv[0]!=null){
-										ticks += Burn.getValue(inv[0]) * (true ?
-												inv[2].stackTagCompound.getFloat(ItemGearbox.efficency) : 1);
+										ticks += (Burn.getValue(inv[0]) * (true ? inv[2].stackTagCompound.getFloat(ItemGearbox.efficency) : 1))
+												* (i==2 ? 1.5 : (i==1 ? 0.5 : 1));
 										inv[0].stackSize--;
 										if(inv[0].stackSize==0)
 											inv[0]=null;
@@ -61,20 +62,23 @@ public class TEDynamo extends TER implements IEnergyHandler, IFluidHandler{
 									FluidTank tank = tanks[in.id-1];
 									if(in.id==1){
 										if(tank.getFluid()!=null && tank.getFluidAmount()>=1000){
-											ticks += FuelLiquid.Hot.getDurationValue(tank.getFluid()) * (true ?
-													inv[2].stackTagCompound.getFloat(ItemGearbox.efficency) : 1);
+											ticks += FuelLiquid.Hot.getDurationValue(tank.getFluid()) *
+													(true ? inv[2].stackTagCompound.getFloat(ItemGearbox.efficency) : 1) * 
+													(i==2 ? 1.5 : (i==1 ? 0.5 : 1));
 											tank.drain(1000, true);
 										}
 									}else if(in.id==2){
 										if(tank.getFluid()!=null && tank.getFluidAmount()>=1000){
 											ticks += FuelLiquid.Cold.getDurationValue(tank.getFluid()) * (Cold.canBeEfficient(tank.getFluid()) ?
-													inv[2].stackTagCompound.getFloat(ItemGearbox.efficency) : 1);
+													inv[2].stackTagCompound.getFloat(ItemGearbox.efficency) : 1) * 
+													(i==2 ? 1.5 : (i==1 ? 0.5 : 1));
 											tank.drain(1000, true);
 										}
 									}else if(in.id==3){
 										if(tank.getFluid()!=null && tank.getFluidAmount()>=1000 && inv[1]!=null){
-											ticks += Math.max(FuelLiquid.Reacting.getDurationValue(tank.getFluid()), Reactant.getValue(inv[1])) *
-													(true ? inv[2].stackTagCompound.getFloat(ItemGearbox.efficency) : 1);
+											ticks += FuelLiquid.Reacting.getDurationValue(tank.getFluid()) + Reactant.getValue(inv[1]) *
+													(true ? inv[2].stackTagCompound.getFloat(ItemGearbox.efficency) : 1)
+													* (i==2 ? 1.5 : (i==1 ? 0.5 : 1));
 											tank.drain(1000, true);
 											inv[1].stackSize--;
 										}
@@ -86,8 +90,17 @@ public class TEDynamo extends TER implements IEnergyHandler, IFluidHandler{
 					ticksRemain = ticks;
 				}
 				if(ticksRemain>0 && ener.energy<getMaxEnergyStored(null)){
+					float k = 0;
+					int n = 0;
+					for(Input in : Input.valid){
+						int i = getStackInSlot(2).stackTagCompound.getInteger(in.ident);
+						if(i>=0){
+							k += (i==1 ? 1.5 : (i==2 ? 0.5 : 1));
+							n++;
+						}
+					}
 					ticksRemain--;
-					ener.energy += inv[2].stackTagCompound.getInteger(ItemGearbox.output);
+					ener.energy += inv[2].stackTagCompound.getInteger(ItemGearbox.output) * k / n;
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 
@@ -96,12 +109,12 @@ public class TEDynamo extends TER implements IEnergyHandler, IFluidHandler{
 		}
 		if(cooldown==0){
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			cooldown = 200;
+			cooldown = 10;
 		}else{
 			cooldown--;
 		}
 	}
-
+	
 	public void transmit() {
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
 			if(worldObj.getBlockTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ) instanceof IEnergyHandler){

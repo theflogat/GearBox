@@ -16,22 +16,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 
 public class ItemResources extends Item{
-	
+
 	public ItemResources(int id) {
 		super(id);
 		setUnlocalizedName(ModLib.getId(Names.resource));
 		setCreativeTab(GearBox.gears);
 		setHasSubtypes(true);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack items, EntityPlayer player, List list, boolean moreInfo) {
-		for(int i = 0; i<Names.desc.length; i++){
+		for(int i = 0; i<Names.desc.length-2; i++){
 			if(items.getItemDamage()==i)
 				list.add(Names.desc[i]);
 		}
-		
-		for(int i = Names.desc.length; i<Names.resources.length; i++){
+
+		for(int i = Names.desc.length-2; i<34; i++){
 			if(items.getItemDamage()==i){
 				GearsValue v = GearsValue.getValue(Names.resources[i]);
 				list.add("Instability : " + v.inst);
@@ -39,29 +39,42 @@ public class ItemResources extends Item{
 				list.add("Output : " + v.out + " RF/t");
 			}
 		}
+
+		for(int i = 34; i<34+8; i++){
+			if(items.getItemDamage()==i){
+				if(i<38){
+					list.add(Names.desc[i-34]);
+					list.add(Names.desc[8]);
+				}else{
+					list.add(Names.desc[i-38]);
+					list.add(Names.desc[7]);
+				}
+			}
+		}
+
 	}
-	
+
 	@Override
 	public String getUnlocalizedName(ItemStack items) {
 		return ModLib.getId(Names.resource) + Names.resources[items.getItemDamage()];
 	}
-	
+
 	@Override
 	public void getSubItems(int j, CreativeTabs creativeTab, List list) {
 		for(int i = 0; i<Names.resources.length; i++){
 			list.add(new ItemStack(this, 1, i));
 		}
 	}
-	
+
 	public Icon[] icons = new Icon[Names.resources.length];
-	
+
 	@Override
 	public void registerIcons(IconRegister reg) {
 		for(int i = 0; i<Names.resources.length; i++){
 			icons[i] = reg.registerIcon(ModLib.getAsset(Names.resources[i]));
 		}
 	}
-	
+
 	@Override
 	public Icon getIconFromDamage(int i) {
 		return icons[i];

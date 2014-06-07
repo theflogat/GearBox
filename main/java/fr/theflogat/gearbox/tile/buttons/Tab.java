@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import fr.theflogat.gearbox.api.Stats;
 import fr.theflogat.gearbox.api.util.Template;
 import fr.theflogat.gearbox.items.ItemGearbox;
 import fr.theflogat.gearbox.items.ItemGearbox.Input;
@@ -67,21 +67,31 @@ public class Tab {
 	public void drawStatText(GuiR gui, Template temp, int x, int y) {
 		ArrayList<String> list = new ArrayList<String>();
 		ArrayList<Color> color = new ArrayList<Color>();
-		ItemStack items = temp.process();
+		ItemStack items = Stats.process(temp.template, temp.inv);
 		if(items==null || items.stackTagCompound == null)
 			return;
 		try{
 			list.add("      Gearbox Stats");color.add(Color.WHITE);
-			list.add("Instability: " + items.stackTagCompound.getFloat(ItemGearbox.instab));
 			color.add(items.stackTagCompound.getFloat(ItemGearbox.instab)<=20? Color.WHITE : Color.RED);
+			color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);
+			color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);
+			list.add("Instability: " + items.stackTagCompound.getFloat(ItemGearbox.instab));
 			list.add("Efficiency: " + items.stackTagCompound.getFloat(ItemGearbox.efficency));
-			color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);
-			color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);color.add(Color.WHITE);
-			list.add("Output: " + items.stackTagCompound.getInteger(ItemGearbox.output) + " RF/t");
+			float k = 0;
+			int n = 0;
+			for(Input in : Input.valid){
+				int i = items.stackTagCompound.getInteger(in.ident);
+				if(i>=0){
+					k += (i==1 ? 1.5 : (i==2 ? 0.5 : 1));
+					n++;
+				}
+			}
+			list.add("Output: " + ((int)items.stackTagCompound.getInteger(ItemGearbox.output) * k / n) + " RF/t");
 			list.add("Input(s): ");
 			for(Input in : Input.valid){
-				if(items.stackTagCompound.getBoolean(in.ident))
-					list.add(in.toString());
+				int i = items.stackTagCompound.getInteger(in.ident);
+				if(i>=0)
+					list.add(in.toString() + (i==0 ? "" : (i==1 ? " Power" : " Efficency")));
 			}
 			list.add("Shaft: " + items.stackTagCompound.getByte(ItemGearbox.shaft) + "/3");
 		}catch(Exception e){

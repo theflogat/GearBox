@@ -48,11 +48,21 @@ public class ItemGearbox extends Item{
 		try{
 			list.add("Instability: " + items.stackTagCompound.getFloat(instab));
 			list.add("Efficiency: " + items.stackTagCompound.getFloat(efficency));
-			list.add("Output: " + items.stackTagCompound.getInteger(output) + " RF/t");
+			float k = 0;
+			int n = 0;
+			for(Input in : Input.valid){
+				int i = items.stackTagCompound.getInteger(in.ident);
+				if(i>=0){
+					k += (i==1 ? 1.5 : (i==2 ? 0.5 : 1));
+					n++;
+				}
+			}
+			list.add("Output: " + ((int)items.stackTagCompound.getInteger(output) * k / n) + " RF/t");
 			list.add("Input(s): ");
 			for(Input in : Input.valid){
-				if(items.stackTagCompound.getBoolean(in.ident))
-					list.add(in.toString());
+				int i = items.stackTagCompound.getInteger(in.ident);
+				if(i>=0)
+					list.add(in.toString() + (i==0 ? "" : (i==1 ? " Power" : " Efficency")));
 			}
 			list.add("Shaft: " + items.stackTagCompound.getByte(shaft) + "/3");
 		}catch(Exception e){

@@ -14,7 +14,7 @@ import fr.theflogat.gearbox.tile.TEDynamo;
 import fr.theflogat.gearbox.tile.TEGearBench;
 import fr.theflogat.gearbox.tile.TETemplate;
 
-public class Blocks {
+public class LoadBlocks {
 
 	public static void init() {
 		

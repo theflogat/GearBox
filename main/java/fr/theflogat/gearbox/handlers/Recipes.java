@@ -5,9 +5,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -21,6 +18,7 @@ import fr.theflogat.gearbox.api.Fuels.Burn;
 import fr.theflogat.gearbox.api.Fuels.Reactant;
 import fr.theflogat.gearbox.api.Gears;
 import fr.theflogat.gearbox.compat.BloodMagic;
+import fr.theflogat.gearbox.compat.BuildCraft;
 import fr.theflogat.gearbox.compat.MineFactoryReloaded;
 import fr.theflogat.gearbox.compat.ThermalExpansion;
 import fr.theflogat.gearbox.lib.Names;
@@ -92,6 +90,10 @@ public class Recipes {
 			Reacting.setReacting(new FluidStack(MineFactoryReloaded.mobessence, 0), 20*80);
 			
 			Hot.setHotLiquid(new FluidStack(MineFactoryReloaded.biofuel, 0), 20*80);
+		}
+		if(BuildCraft.bc){
+			Hot.setHotLiquid(new FluidStack(BuildCraft.fluidFuel, 0), 20*120);
+			Hot.setHotLiquid(new FluidStack(BuildCraft.fluidOil, 0), 20*15);
 		}
 		//List list = CraftingManager.getInstance().getRecipeList();
 		//
@@ -294,6 +296,54 @@ public class Recipes {
 			"STS",
 			Character.valueOf('S'), "ingotIron", Character.valueOf('R'), "blockRedstone", Character.valueOf('I'), "gemDiamond",
 			Character.valueOf('D'), new ItemStack(Gears.GearDynamo), Character.valueOf('T'), Block.torchRedstoneActive
+		}));
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Gears.Resource, 1, Names.resources.length-4), new Object[]{
+			"gemDiamond", "shaftInputCombustionEfficient", "gemDiamond", "gemDiamond", "gemDiamond"
+		}));
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Gears.Resource, 1, Names.resources.length-3), new Object[]{
+			"gemDiamond", "shaftInputLiquidHotEfficient", "gemDiamond", "gemDiamond", "gemDiamond"
+		}));
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Gears.Resource, 1, Names.resources.length-2), new Object[]{
+			"gemDiamond", "shaftInputLiquidCoolEfficient", "gemDiamond", "gemDiamond", "gemDiamond"
+		}));
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Gears.Resource, 1, Names.resources.length-1), new Object[]{
+			"gemDiamond", "shaftInputLiquidReactantEfficient", "gemDiamond", "gemDiamond", "gemDiamond"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Gears.Resource, 1, Names.resources.length-8), true, new Object[]{
+			"GIG",
+			"ISI",
+			"GIG",
+			Character.valueOf('S'), "shaftInputCombustion", Character.valueOf('I'), "blockRedstone", Character.valueOf('G'),
+			"blockGlowstone"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Gears.Resource, 1, Names.resources.length-7), true, new Object[]{
+			"GIG",
+			"ISI",
+			"GIG",
+			Character.valueOf('S'), "shaftInputLiquidHot", Character.valueOf('I'), "blockRedstone", Character.valueOf('G'),
+			"blockGlowstone"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Gears.Resource, 1, Names.resources.length-6), true, new Object[]{
+			"GIG",
+			"ISI",
+			"GIG",
+			Character.valueOf('S'), "shaftInputLiquidCool", Character.valueOf('I'), "blockRedstone", Character.valueOf('G'),
+			"blockGlowstone"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Gears.Resource, 1, Names.resources.length-5), true, new Object[]{
+			"GIG",
+			"ISI",
+			"GIG",
+			Character.valueOf('S'), "shaftInputLiquidReactant", Character.valueOf('I'), "blockRedstone", Character.valueOf('G'),
+			"blockGlowstone"
 		}));
 
 		if(Ids.g()){

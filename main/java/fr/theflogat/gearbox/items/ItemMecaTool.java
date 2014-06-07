@@ -69,12 +69,12 @@ public class ItemMecaTool extends ItemTool implements IEnergyContainerItem{
 			int y = (int) player.posY;
 			int z = (int) player.posZ;
 			if(mov!=null && mov.typeOfHit==EnumMovingObjectType.TILE){
-				for(int i = Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800); 
-						i<Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800); i++){
-					for(int j = Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800); 
-							j<Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800); j++){
-						for(int k = Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800); 
-								k<Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800); k++){
+				for(int i = (int) Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800*getPowerMod(items)); 
+						i<Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800*getPowerMod(items)); i++){
+					for(int j = (int) Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800*getPowerMod(items)); 
+							j<Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800*getPowerMod(items)); j++){
+						for(int k = (int) Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800*getPowerMod(items)); 
+								k<Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800*getPowerMod(items)); k++){
 							if(canOperate(items)){
 								if(w.getBlockId(x + i, y + j, z + k)!=0 && 
 										Block.blocksList[w.getBlockId(x + i, y + j, z + k)].getBlockHardness(w, x + i, y + j, z + k)>=0){
@@ -101,12 +101,12 @@ public class ItemMecaTool extends ItemTool implements IEnergyContainerItem{
 			}
 
 			List ents = w.getEntitiesWithinAABBExcludingEntity(player, 
-					AxisAlignedBB.getBoundingBox(x + Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800), 
-							y + Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800), 
-							z + Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800), 
-							x + Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800), 
-							y + Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800), 
-							z + Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800)));
+					AxisAlignedBB.getBoundingBox(x + Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800)*getPowerMod(items), 
+							y + Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800)*getPowerMod(items), 
+							z + Math.min(-5, -items.stackTagCompound.getInteger(ItemGearbox.output)/800)*getPowerMod(items), 
+							x + Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800)*getPowerMod(items), 
+							y + Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800)*getPowerMod(items), 
+							z + Math.max(5, items.stackTagCompound.getInteger(ItemGearbox.output)/800)*getPowerMod(items)));
 			for(int i=0; i<ents.size(); i++){
 				if(ents.get(i) instanceof EntityLivingBase){
 					hitEntity(items, (EntityLivingBase) ents.get(i), player);
@@ -136,8 +136,7 @@ public class ItemMecaTool extends ItemTool implements IEnergyContainerItem{
 
 	@Override
 	public boolean onBlockDestroyed(ItemStack items, World w, int x, int y, int z, int meta, EntityLivingBase player) {
-		items.stackTagCompound.setInteger("power", (int) (items.stackTagCompound.getInteger("power") -
-				1000/items.stackTagCompound.getFloat(ItemGearbox.efficency)));
+		usePower(items);
 		if(items.stackTagCompound.getFloat(ItemGearbox.instab)>20){
 			if(player.getHealth()<=8){
 				((EntityPlayer)player).onDeath(DamageSource.generic);
@@ -194,8 +193,8 @@ public class ItemMecaTool extends ItemTool implements IEnergyContainerItem{
 				entityHitted.onDeath(DamageSource.generic);
 				entityHitted.heal(-dmg);
 			}
-			items.stackTagCompound.setInteger("power", (int) (items.stackTagCompound.getInteger("power") -
-					1000/items.stackTagCompound.getFloat(ItemGearbox.efficency)));
+
+			usePower(items);
 
 			if(items.stackTagCompound.getFloat(ItemGearbox.instab)>20){
 				if(entityHit.getHealth()<=8){
@@ -207,6 +206,33 @@ public class ItemMecaTool extends ItemTool implements IEnergyContainerItem{
 			}
 		}
 		return true;
+	}
+	
+	private float getPowerMod(ItemStack items) {
+		float k = 0;
+		int n = 0;
+		for(Input in : Input.valid){
+			int i = items.stackTagCompound.getInteger(in.ident);
+			if(i>=0){
+				k += (i==1 ? 1.5 : (i==2 ? 0.5 : 1));
+				n++;
+			}
+		}
+		return k/n;
+	}
+	
+	private void usePower(ItemStack items) {
+		float k = 0;
+		int n = 0;
+		for(Input in : Input.valid){
+			int i = items.stackTagCompound.getInteger(in.ident);
+			if(i>=0){
+				k += (i==2 ? 1.5 : (i==1 ? 0.5 : 1));
+				n++;
+			}
+		}
+		items.stackTagCompound.setInteger("power", (int) (items.stackTagCompound.getInteger("power")-
+				(1000/items.stackTagCompound.getInteger(ItemGearbox.efficency)*k/n)));
 	}
 
 	@Override

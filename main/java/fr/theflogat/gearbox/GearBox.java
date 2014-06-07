@@ -12,14 +12,15 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import fr.theflogat.gearbox.blocks.Blocks;
+import fr.theflogat.gearbox.blocks.LoadBlocks;
 import fr.theflogat.gearbox.compat.BloodMagic;
+import fr.theflogat.gearbox.compat.BuildCraft;
 import fr.theflogat.gearbox.compat.MineFactoryReloaded;
 import fr.theflogat.gearbox.compat.ThermalExpansion;
 import fr.theflogat.gearbox.events.EventRegister;
 import fr.theflogat.gearbox.handlers.CreativeTabGear;
 import fr.theflogat.gearbox.handlers.Recipes;
-import fr.theflogat.gearbox.items.Items;
+import fr.theflogat.gearbox.items.LoadItems;
 import fr.theflogat.gearbox.lib.ModLib;
 import fr.theflogat.gearbox.lib.config.ConfigHandler;
 import fr.theflogat.gearbox.proxies.CommonProxy;
@@ -42,8 +43,8 @@ public class GearBox {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
-		Blocks.init();
-		Items.init();
+		LoadBlocks.init();
+		LoadItems.init();
 		new EventRegister();
 		proxy.initRenderers();
 		proxy.initSounds();
@@ -60,6 +61,7 @@ public class GearBox {
 		ThermalExpansion.init();
 		BloodMagic.init();
 		MineFactoryReloaded.init();
+		BuildCraft.init();
 		Recipes.init();
 	}
 }
